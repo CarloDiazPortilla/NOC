@@ -9,6 +9,7 @@ export class CronService {
       cronTime,
       onTick,
     );
+    job.start();
     return job;
   }
 }
