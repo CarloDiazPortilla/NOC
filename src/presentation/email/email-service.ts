@@ -23,16 +23,20 @@ export class EmailService {
     }
   })
 
+  constructor(
+    // transporter can be inject as a dependency
+  ) {
+  }
+
   async sendMail(options: SendMailOptions): Promise<boolean> {
     const { to, htmlBody, subject, attachments = [] } = options;
     try {
-      const sentInformation = await this.transporter.sendMail({
+      await this.transporter.sendMail({
         to,
         subject,
         html: htmlBody,
         attachments
       })
-      console.log(sentInformation);
       return true;
     } catch (error) {
       return false
