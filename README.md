@@ -8,7 +8,11 @@ Network Operations Center App for monitoring that implements Clean Architecture
 ```
 npm install
 ```
-4. Run the following command to run the application
+4. Run the following command to set up MongoDB with Docker
+```
+docker compose up
+```
+5. Run the following command to run the application
 ```
 npm run dev
 ```
