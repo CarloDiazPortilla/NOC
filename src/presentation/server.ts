@@ -14,10 +14,10 @@ export class Server {
     console.log("Server started...");
 
     // Send email
-    const sent = await new SendEmailLogs(
-      emailService,
-      fileSystemLogRepository,
-    ).execute("someemail@domain.com");
+    // const sent = await new SendEmailLogs(
+    //   emailService,
+    //   fileSystemLogRepository,
+    // ).execute("someemail@domain.com");
 
     // CronService.createJob("*/5 * * * * *", () => {
     //   // const url = "http://localhost:3000";
