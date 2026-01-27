@@ -1,4 +1,5 @@
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
@@ -7,11 +8,11 @@ import { LogRepositoryImpl } from "../infrastructure/repositories/log-impl.repos
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email-service";
 
-const logRepository = new LogRepositoryImpl(new PostgresLogDatasource());
-// const logRepository = new LogRepositoryImpl(new MongoLogDatasource());
-// const logRepository = new LogRepositoryImpl(new FileSystemDatasource());
+const postgresLogRepository = new LogRepositoryImpl(new PostgresLogDatasource());
+const mongoLogRepository = new LogRepositoryImpl(new MongoLogDatasource());
+const fileSystemLogRepository = new LogRepositoryImpl(new FileSystemDatasource());
 const emailService = new EmailService();
-const checkService = new CheckService(logRepository);
+const checkService = new CheckService(fileSystemLogRepository);
 
 export class Server {
   public static async start() {
@@ -30,7 +31,18 @@ export class Server {
     //     logRepository,
     //   ).execute(url);
     // });
-    const logs = await logRepository.getLogs();
-    console.log({ logs })
+    CronService.createJob("*/5 * * * * *", () => {
+      // const url = "http://localhost:3000";
+      const url = "https://google.com";
+      new CheckServiceMultiple(
+        [
+          postgresLogRepository,
+          mongoLogRepository,
+          fileSystemLogRepository
+        ],
+      ).execute(url);
+    });
+    // const logs = await logRepository.getLogs();
+    // console.log({ logs })
   }
 }
