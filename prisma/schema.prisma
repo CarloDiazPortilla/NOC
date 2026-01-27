@@ -20,9 +20,9 @@ enum LogSeverityLevel {
 }
 
 model Log {
-  id        Int              @id @default(autoincrement())
-  message   String
-  origin    String
-  level     LogSeverityLevel
-  createdAt DateTime         @default(now())
+  id            Int              @id @default(autoincrement())
+  message       String
+  origin        String
+  severityLevel LogSeverityLevel
+  createdAt     DateTime         @default(now())
 }
